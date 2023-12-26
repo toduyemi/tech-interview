@@ -8,7 +8,7 @@ test.afterEach(async ({ page }) => {
     await page.evaluate(() => {
         localStorage.clear();
     })
-    await page.close()
+    await page.close();
 
 });
 
@@ -33,7 +33,7 @@ test.describe('Verifying initial state', () => {
 
     test('should have header and decription', async () => {
         await expect.soft(timePage.pageHeading).toBeVisible();
-        await expect.soft(timePage.pageBanner).toHaveText('This app helps you keep track of your friends’ timezones!')
+        await expect.soft(timePage.pageBanner).toHaveText('This app helps you keep track of your friends’ timezones!');
     })
 
     test('Should have add timezone button and form', async () => {
@@ -51,11 +51,6 @@ test.describe('Verifying initial state', () => {
         await expect.soft(page.getByRole('button', { name: 'Delete , Local' })).not.toBeVisible();
         await expect.soft(page.getByRole('button', { name: 'Delete , Local' })).not.toBeEnabled();
     })
-
-
-
-
-
 });
 
 test.describe('Verify default local time is correct', () => {
@@ -108,11 +103,9 @@ test.describe('Add timezones functionality', () => {
             await timePage.addARecord(record);
 
             await expect.soft(page.getByRole('row', { name: record.label })).toBeVisible();
-
-        })
-    })
-
-})
+        });
+    });
+});
 
 test.describe('Delete functionality', () => {
     let timePage: TimekeeperPage;
@@ -159,8 +152,6 @@ test.describe('Layout of table', () => {
         const timesSorted = times.every((value, index, arr) => index === 0 || isAfter(value, arr[index - 1]) || isEqual(value, arr[index - 1]));
 
         expect(timesSorted).toBe(true);
-    })
-
-
-})
+    });
+});
 
