@@ -123,9 +123,9 @@ test.describe('Delete functionality', () => {
     })
 
     test('Should be able to delete added records', async ({ page }) => {
-        const testRecLab = records[0].label;
-        await timePage.deleteRecord({ label: testRecLab });
-        await expect(page.getByRole('row', { name: `${testRecLab}` })).not.toBeVisible();
+        const testRec = records[0].label;
+        await timePage.deleteRecord({ label: testRec });
+        await expect(page.getByRole('row', { name: `${testRec}` })).not.toBeVisible();
     })
 
 })
@@ -154,3 +154,72 @@ test.describe('Layout of table', () => {
     });
 });
 
+test.describe('Data persistance', () => {
+    let timePage: TimekeeperPage;
+    test.beforeEach(async ({ page }) => {
+        timePage = new TimekeeperPage(page);
+        await timePage.goTo();
+
+        for (const record of records) {
+            if (record.label === "TZ-7") {
+                break;
+            }
+            await timePage.addARecord(record);
+        }
+    })
+
+    test('Data should persist', async ({ page }) => {
+        let count = 1;
+        for (const rec of records) {
+            if (rec.label === "TZ-7") {
+                break;
+            }
+            await expect.soft(page.getByRole('row', { name: rec.label })).toContainText(rec.timezone);
+            count++;
+
+        }
+        await verifyAmountOfTimeZonesInLocalStorage(page, count);
+
+        await page.reload();
+
+        for (const rec of records) {
+            if (rec.label === "TZ-7") {
+                break;
+            }
+            await expect.soft(page.getByRole('row', { name: rec.label })).toContainText(rec.timezone);
+        }
+        await verifyAmountOfTimeZonesInLocalStorage(page, count);
+    });
+
+    test('Deleted data should not persist', async ({ page }) => {
+        let count = 1;
+        for (const record of records) {
+            if (record.label === "TZ-7") {
+                break;
+            }
+            await expect.soft(page.getByRole('row', { name: record.label })).toContainText(record.timezone);
+            count++;
+
+        }
+        await verifyAmountOfTimeZonesInLocalStorage(page, count);
+
+        for (const record of records) {
+            if (record.label === "TZ-7") {
+                break;
+            }
+            await timePage.deleteRecord({ label: record.label });
+            count--;
+        }
+        await page.reload();
+
+        for (const record of records) {
+            if (record.label === "TZ-7") {
+                break;
+            }
+            await expect.soft(page.getByRole('row', { name: record.label })).not.toBeVisible();
+        }
+        await verifyAmountOfTimeZonesInLocalStorage(page, count);
+    })
+
+
+});
