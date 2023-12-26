@@ -1,0 +1,49 @@
+{
+    "records": [
+        {
+            "label": "TZ-1",
+            "location": "Eastern Standard Time",
+            "timezone": "America/New_York"
+        },
+        {
+            "label": "TZ-2",
+            "location": "Central Standard Time",
+            "timezone": "America/Chicago"
+        },
+        {
+            "label": "TZ-3",
+            "location": "Mountain Standard Time",
+            "timezone": "America/Denver"
+        },
+        {
+            "label": "TZ-4",
+            "location": "Pacific Standard Time",
+            "timezone": "America/Los_Angeles"
+        },
+        {
+            "label": "TZ-5",
+            "location": "Alaska Standard Time",
+            "timezone": "America/Juneau"
+        },
+        {
+            "label": "TZ-6",
+            "location": "Hawaii-Aleutian Standard Time",
+            "timezone": "Pacific/Honolulu"
+        },
+        {
+            "label": "TZ-7",
+            "location": "Central European Time",
+            "timezone": "Europe"
+        },
+        {
+            "label": "TZ-8",
+            "location": "Australian Eastern Time",
+            "timezone": "Australia"
+        },
+        {
+            "label": "TZ-9",
+            "location": "Eastern Standard Time",
+            "timezone": "America/New_York"
+        }
+    ]
+}
