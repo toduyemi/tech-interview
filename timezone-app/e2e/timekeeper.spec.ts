@@ -97,14 +97,20 @@ test.describe('Add timezones functionality', () => {
         await verifyAmountOfTimeZonesInLocalStorage(page, 3);
     });
 
-    records.forEach(record => {
-        test(`Verify user can add any timezone: ${record.label}`, async ({ page }) => {
+    test.describe('Verify user can add any timezone', async () => {
+        let count = 1;
+        records.forEach(record => {
+            test(`Verify user can add any timezone: ${record.label}`, async ({ page }) => {
 
-            await timePage.addARecord(record);
+                await timePage.addARecord(record);
 
-            await expect.soft(page.getByRole('row', { name: record.label })).toBeVisible();
+                await expect.soft(page.getByRole('row', { name: record.label })).toBeVisible();
+            });
+            count++;
         });
+        expect(count).toEqual(records.length + 1);
     });
+
 });
 
 test.describe('Delete functionality', () => {
