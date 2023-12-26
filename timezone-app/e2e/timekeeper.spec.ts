@@ -146,7 +146,6 @@ test.describe('Layout of table', () => {
         const timeCells = await page.locator('table tr td').filter({
             hasText: /\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))/
         }).allTextContents();
-        console.log(timeCells);
         const times = timeCells.map(timeCell => parse(timeCell, 'hh:mm a', new Date()));
 
         const timesSorted = times.every((value, index, arr) => index === 0 || isAfter(value, arr[index - 1]) || isEqual(value, arr[index - 1]));
