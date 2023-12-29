@@ -51,32 +51,34 @@ test.describe('Verifying initial state', () => {
         await expect.soft(page.getByRole('button', { name: 'Delete , Local' })).not.toBeVisible();
         await expect.soft(page.getByRole('button', { name: 'Delete , Local' })).not.toBeEnabled();
     })
+
+    test.describe('Verify default local time is correct', () => {
+
+        const timezonesToTest = ['Canada/Eastern', 'Canada/Pacific', 'America/Los_Angeles', 'Europe/Paris', 'Asia/Tokyo']
+
+        for (const timezone of timezonesToTest) {
+
+            test.describe(`Testing ${timezone}`, () => {
+                test.use({
+                    timezoneId: `${timezone}`
+                });
+
+                test(`Default should show local time - ${timezone}`, async ({ page }) => {
+                    await page.goto('localhost:3000');
+
+                    const expectedTime = new Date().toLocaleTimeString('en-US', { timeZone: timezone, hour: 'numeric', minute: '2-digit' });
+                    const displayedTime = await page.locator('table tr td').filter({
+                        hasText: /\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))/
+                    }).textContent();
+
+                    expect(displayedTime).toBe(expectedTime);
+                });
+            });
+        }
+    });
 });
 
-test.describe('Verify default local time is correct', () => {
 
-    const timezonesToTest = ['Canada/Eastern', 'Canada/Pacific', 'America/Los_Angeles', 'Europe/Paris', 'Asia/Tokyo']
-
-    for (const timezone of timezonesToTest) {
-
-        test.describe(`Testing ${timezone}`, () => {
-            test.use({
-                timezoneId: `${timezone}`
-            });
-
-            test(`Default should show local time - ${timezone}`, async ({ page }) => {
-                await page.goto('localhost:3000');
-
-                const expectedTime = new Date().toLocaleTimeString('en-US', { timeZone: timezone, hour: 'numeric', minute: '2-digit' });
-                const displayedTime = await page.locator('table tr td').filter({
-                    hasText: /\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))/
-                }).textContent();
-
-                expect(displayedTime).toBe(expectedTime);
-            });
-        });
-    }
-});
 
 test.describe('Add timezones functionality', () => {
     let timePage: TimekeeperPage;
